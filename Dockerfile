@@ -1,17 +1,21 @@
-FROM python:3.10.13-alpine
+# Use an official Python runtime as a base image
+FROM python:3.9
 
-LABEL name="Python Application" \   
-     maintainer="Ali Kahoot <kahoot.ali@outlook.com>" \
-     summary="A Sample Python application"
+# Set environment variables
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
 
+# Set the working directory in the container
 WORKDIR /app
 
-COPY requirements.txt .
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-RUN pip install -r 'requirements.txt'
+# Install the required dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8080
+# Expose the port the app runs on
+EXPOSE 5000
 
-COPY . ./
-
-CMD [ "python", "./app.py" ]
+# Run the application
+CMD ["flask", "run"]
